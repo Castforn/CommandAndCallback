@@ -327,7 +327,7 @@ public class Test : MonoBehaviour
 }
 ```
 
-And lastly, `Command`. This is base class for `BaseActionCommand` and `BaseFuncCommand`.  
+Another one is `Command`. This is base class for `BaseActionCommand` and `BaseFuncCommand`.  
 
 It only has the bool `HasReleased` and the method `Release()`. You can't invoke it since it doesn't know what type of delegate its handling, so you'll barely use it at all. However you can use it as a way to release all commands in a collection for example.
 
@@ -391,6 +391,74 @@ public class Test : MonoBehaviour
     MonoBehaviour FinallyDone()
     {
         return this;
+    }
+
+}
+```
+
+## Representations
+
+And lastly, all non-base commands (`ActionCommand`, `FuncCommand`, and `PredicateCommand`) are a representation of the delegate they encapsulates. Meaning they have some specific traits that might otherwise have been easy to overlook. Here are some examples.
+
+```csharp
+using Castforn.CommandAndCallback;
+using System;
+using UnityEngine;
+
+public class Test : MonoBehaviour
+{
+
+    void Start()
+    {
+        // You wrap ImOut into a command
+        ActionCommand command = Command.GetAction(ImOut);
+
+
+        // And store the method into an action delegate
+        Action method = ImOut;
+
+
+        // Despite the command and method being different objects, they are still treated as the same because the command encapsulates ImOut
+        if (command == method) Debug.Log("They're practically the same");
+
+
+        // However, once you release the command, you also release its encapsulation of the method
+        command.Release();
+
+
+        // Meaning they are no longer the same
+        if (command != method) Debug.Log("They're no longer the same");
+
+
+        // Releasing a command is practically the same as setting an action to null
+        method = null;
+        command = null;
+
+
+        // So its dangerous to release a command at the wrong time like being used as a key in a dictionary
+        // Because releasing the command also causes its hashcode to turn into 0 despite the command object itself remains active
+
+
+        // Lastly, you can also explicitly turn the command back to its original delegate
+        command = Command.GetAction(ImOut);
+
+
+        // When you turn the command back to its original delegate, you also release the command object back to its pool as a side effect
+        method = (Action)command;
+
+
+        // HasReleased is true here because the command was releaased when you converted it back to its original delegate
+        if (command.HasReleased) Debug.Log("Yep, it released");
+
+
+        // You can also implicitly turn the delegate into a command. Its the same as Command.GetAction() but more convenient
+        command = method;
+    }
+
+
+    void ImOut()
+    {
+        Debug.Log("Welp, there he goes");
     }
 
 }
