@@ -447,7 +447,7 @@ public class Test : MonoBehaviour
         method = (Action)command;
 
 
-        // HasReleased is true here because the command was releaased when you converted it back to its original delegate
+        // HasReleased is true here because the command was released when you converted it back to its original delegate
         if (command.HasReleased) Debug.Log("Yep, it released");
 
 
