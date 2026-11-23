@@ -5,7 +5,8 @@ And yes, the name is directly referenced by a game called 'Command and Conquer'.
 If you wanna know what a command is, you can search "C# Command Pattern" to learn more.  
 
 Git URL to paste into your package manager:  
-`https://github.com/Castforn/Command-And-Callback.git?path=/com.castforn.commandandcallback#v1.0.0`
+
+`https://github.com/Castforn/CommandAndCallback.git?path=/com.castforn.commandandcallback#v1.0.0`
 
 ## Features
 
