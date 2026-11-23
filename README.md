@@ -1,7 +1,8 @@
 # Command And Callback
 
-A lightweight and reusable pooled command library for Unity. Its also my first Github project, yay!  
-And yes, the name is directly referenced by a game called 'Command and Conquer'.
+A lightweight and reusable pooled command library for Unity. Its also my first Github repo, yay!  
+And yes, the name is directly referenced by a game called 'Command and Conquer'.  
+If you wanna know what a command is, you can search "C# Command Pattern" to learn more.
 
 ## Features
 
