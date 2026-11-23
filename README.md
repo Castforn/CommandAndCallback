@@ -4,9 +4,16 @@ A lightweight and reusable pooled command library for Unity. Its also my first G
 And yes, the name is directly referenced by a game called 'Command and Conquer'.  
 If you wanna know what a command is, you can search "C# Command Pattern" to learn more.  
 
-Git URL to paste into your package manager:  
+## Installation
 
-`https://github.com/Castforn/CommandAndCallback.git`
+1. Open you Unity project
+2. Select `Window` at your top corner screen
+3. Then go to `Package Management`
+4. Select `Package Manager`
+5. Select `+` at the top-left corner of the package manager window
+6. Select `Install package from git URL`
+7. Paste this `https://github.com/Castforn/CommandAndCallback.git`
+8. Your done!
 
 ## Features
 
