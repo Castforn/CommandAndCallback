@@ -12,7 +12,7 @@ If you wanna know what a command is, you can search "C# Command Pattern" to lear
 4. Select `Package Manager`
 5. Select `+` at the top-left corner of the package manager window
 6. Select `Install package from git URL`
-7. Paste this `https://github.com/Castforn/CommandAndCallback.git`
+7. Paste this git URL `https://github.com/Castforn/CommandAndCallback.git`
 8. Your done!
 
 ## Features
