@@ -443,10 +443,10 @@ public class Test : MonoBehaviour
         // Because releasing the command also causes its hashcode to turn into 0 despite the command object itself remains active
 
 
-        // Lastly, you can also explicitly turn the command back to its original delegate
         command = Command.GetAction(ImOut);
 
 
+        // Lastly, you can also explicitly turn the command back to its original delegate
         // When you turn the command back to its original delegate, you also release the command object back to its pool as a side effect
         method = (Action)command;
 
