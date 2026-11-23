@@ -6,7 +6,7 @@ If you wanna know what a command is, you can search "C# Command Pattern" to lear
 
 Git URL to paste into your package manager:  
 
-`https://github.com/Castforn/CommandAndCallback.git#v1.0.0`
+`https://github.com/Castforn/CommandAndCallback.git`
 
 ## Features
 
