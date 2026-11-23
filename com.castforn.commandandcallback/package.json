@@ -5,10 +5,14 @@
   "displayName": "Command And Callback",
   "description": "A lightweight and reusable pooled command library for Unity.",
   "unity": "2022.3",
-
+  
   "documentationUrl": "https://github.com/Castforn/Command-And-Callback/blob/main/README.md",
   "changelogUrl": "https://github.com/Castforn/Command-And-Callback/blob/main/CHANGELOG.md",
   "licensesUrl": "https://github.com/Castforn/Command-And-Callback/blob/main/LICENSE.md",
+  "repository": {
+        "type": "git",
+        "url": "https://github.com/Castforn/Command-And-Callback.git"
+    },
 
   "keywords": [
     "castforn",
