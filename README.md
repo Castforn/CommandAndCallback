@@ -7,7 +7,7 @@ If you wanna know what a command is, you can search "C# Command Pattern" to lear
 Git URL to paste into your package manager:  
 
 v1.0.0  
-`https://github.com/Castforn/Command-And-Callback.git?path=/com.castforn.commandandcallback#v1.0.0`
+`https://github.com/Castforn/CommandAndCallback.git?path=/com.castforn.commandandcallback#v1.0.0`
 
 ## Features
 
