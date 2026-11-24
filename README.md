@@ -283,6 +283,50 @@ public class Test : MonoBehaviour
 }
 ```
 
+## Read Only Commands
+`ActionCommand` and `FuncCommand` has a read-only variant (`ReadOnlyActionCommand` and `ReadOnlyFuncCommand`) that prevents you from being able to change arguments. `PredicateCommand` doesn't also have this.
+
+```csharp
+using Castforn.CommandAndCallback;
+using UnityEngine;
+
+public class Test : MonoBehaviour
+{
+
+    void Start()
+    {
+        ActionCommand<float, bool> command = Command.GetAction<float, bool>(UhHuh);
+
+
+        // You can read and change this command's arguments
+        if (command.Arg1 == 0) Debug.Log("Yippee!");
+
+        command.Arg1 = 1.75f;
+        command.Arg2 = false;
+
+        command.SetArgs(2.2f, true);
+
+
+        // But when converting to ReadOnlyActionCommand, you can only read its arguments
+        ReadOnlyActionCommand<float, bool> readOnlyCommand = command;
+
+        if (readOnlyCommand.Arg1 == 0) Debug.Log("Can still read!");
+
+
+        // This will cause a compiler error
+        readOnlyCommand.Arg2 = false;
+    }
+
+
+    void UhHuh(float uh, bool huh)
+    {
+        Debug.Log(uh + " " + huh);
+    }
+
+}
+```
+
+
 ## Base Commands
 
 `BaseActionCommand` is the base class for `ActionCommand` while `BaseFuncCommand` is the base class for `FuncCommand`. `PredicateCommand` however doesn't have one. The limit of these base commands is that their incapable of setting arguments or invoking them using the arguments you provided. However, they serve as the common base for all of their respective commands, regardless of how many arguments they take. They are are most useful when you want to store commands with different parameters into a single collection like for example.
