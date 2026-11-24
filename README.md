@@ -124,7 +124,7 @@ public class Test : MonoBehaviour
         actionCommand.SetArgs(null, 88.6);
 
 
-        // You can then invoke it using its stored arguements
+        // You can then invoke it using its stored arguments
         actionCommand.Invoke();
 
 
@@ -185,13 +185,13 @@ public class Test : MonoBehaviour
         result = command.Invoke();
 
 
-        // I recommend discarding their reference after they've been released to prevent unnecessary problems
-        command = null;
-
-
-        // You can also look at HasReleased if the command has already been released or not yet
+        // You can look at HasReleased if the command has already been released or not yet
         if (command.HasReleased) Debug.Log("Has");
         else Debug.Log("Has not");
+
+
+        // I also recommend discarding their reference after they've been released to prevent unnecessary problems
+        command = null;
 
 
         // But thats not a safe way to identify that the command you released will stay that way
@@ -284,7 +284,7 @@ public class Test : MonoBehaviour
 ```
 
 ## Read-Only Commands
-`ActionCommand` and `FuncCommand` has a read-only variant (`ReadOnlyActionCommand` and `ReadOnlyFuncCommand`) that prevents you from being able to change arguments. `PredicateCommand` doesn't have this.
+`ActionCommand`, `FuncCommand`, and `PredicateCommand` has a read-only variant (`ReadOnlyActionCommand`, `ReadOnlyFuncCommand`, and `ReadOnlyPredicateCommand`) that prevents you from being able to change arguments.
 
 ```csharp
 using Castforn.CommandAndCallback;
