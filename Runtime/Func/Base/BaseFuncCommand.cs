@@ -9,25 +9,26 @@ namespace Castforn.CommandAndCallback
     public abstract class BaseFuncCommand<TResult> : Command
     {
         /// <summary>
-        /// Invokes the command and returns it's result.
+        /// Invokes the command and returns a result.
         /// </summary>
         [HideInCallstack]
         public abstract TResult Invoke();
 
         /// <summary>
-        /// Invokes the command and returns it's result then releases it afterward.
+        /// Invokes the command and returns a result then releases it afterward.
         /// </summary>
         [HideInCallstack]
         public TResult Execute()
         {
             TResult result;
-#if UNITY_EDITOR
-            try { result = Invoke(); }
-            finally { Release(); }
-#else
-            result = Invoke();
-            Release();
-#endif
+            try
+            {
+                result = Invoke();
+            }
+            finally
+            {
+                Release();
+            }
             return result;
         }
     }

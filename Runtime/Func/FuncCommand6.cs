@@ -1,0 +1,210 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Castforn.CommandAndCallback
+{
+
+    /// <inheritdoc cref="FuncCommand{TResult}"/>
+    public sealed class FuncCommand<T1, T2, T3, T4, T5, T6, TResult> : ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult>, IEquatable<FuncCommand<T1, T2, T3, T4, T5, T6, TResult>>
+    {
+        #region Lifecycle
+        FuncCommand(Func<T1, T2, T3, T4, T5, T6, TResult> callback) => _callback = callback;
+        #endregion
+
+        #region API
+        /// <inheritdoc cref="FuncCommand{T1, TResult}.Get(Func{T1, TResult})"/>
+        public static FuncCommand<T1, T2, T3, T4, T5, T6, TResult> Get(Func<T1, T2, T3, T4, T5, T6, TResult> callback)
+        {
+            if (callback == null) return null;
+            while (_pool.TryPop(out var command))
+            {
+                command._callback = callback;
+                command._hasReleased = false;
+                return command;
+            }
+            return new(callback);
+        }
+
+        /// <inheritdoc cref="FuncCommand{T1, T2, T3, T4, T5, T6, TResult}.Get(Func{T1, T2, T3, T4, T5, T6, TResult})"/>
+        public static FuncCommand<T1, T2, T3, T4, T5, T6, TResult> Get(Func<T1, T2, T3, T4, T5, T6, TResult> callback, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
+        {
+            if (callback == null) return null;
+            var command = Get(callback);
+
+            command.Arg1 = arg1;
+            command.Arg2 = arg2;
+            command.Arg3 = arg3;
+            command.Arg4 = arg4;
+            command.Arg5 = arg5;
+            command.Arg6 = arg6;
+            return command;
+        }
+
+
+
+        public new T1 Arg1
+        {
+            get => base.Arg1;
+            set => base.Arg1 = value;
+        }
+
+        public new T2 Arg2
+        {
+            get => base.Arg2;
+            set => base.Arg2 = value;
+        }
+
+        public new T3 Arg3
+        {
+            get => base.Arg3;
+            set => base.Arg3 = value;
+        }
+
+        public new T4 Arg4
+        {
+            get => base.Arg4;
+            set => base.Arg4 = value;
+        }
+
+        public new T5 Arg5
+        {
+            get => base.Arg5;
+            set => base.Arg5 = value;
+        }
+
+        public new T6 Arg6
+        {
+            get => base.Arg6;
+            set => base.Arg6 = value;
+        }
+
+        /// <inheritdoc cref="FuncCommand{T1, TResult}.SetArgs(T1)"/>
+        public void SetArgs(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
+        {
+            Arg1 = arg1;
+            Arg2 = arg2;
+            Arg3 = arg3;
+            Arg4 = arg4;
+            Arg5 = arg5;
+            Arg6 = arg6;
+        }
+
+
+
+        public override bool Release()
+        {
+            if (_hasReleased) return false;
+            _hasReleased = true;
+
+            _callback = null;
+            Arg1 = default;
+            Arg2 = default;
+            Arg3 = default;
+            Arg4 = default;
+            Arg5 = default;
+            Arg6 = default;
+
+            _pool.Push(this);
+            return true;
+        }
+
+
+
+        public bool Equals(FuncCommand<T1, T2, T3, T4, T5, T6, TResult> other) => other is not null && _callback == other._callback;
+        public override bool Equals(object obj) => obj is FuncCommand<T1, T2, T3, T4, T5, T6, TResult> other && Equals(other);
+        public override int GetHashCode() => _callback?.GetHashCode() ?? 0;
+
+        public static bool operator ==(FuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, FuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => ReferenceEquals(left, right) || left is not null && left.Equals(right);
+        public static bool operator !=(FuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, FuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => !(left == right);
+
+        public static bool operator ==(FuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => left?._callback == right;
+        public static bool operator !=(FuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => !(left == right);
+
+        public static bool operator ==(ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, FuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => left == right?._callback;
+        public static bool operator !=(ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, FuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => !(left == right);
+
+        public static bool operator ==(FuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, Func<T1, T2, T3, T4, T5, T6, TResult> right) => left?._callback == right;
+        public static bool operator !=(FuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, Func<T1, T2, T3, T4, T5, T6, TResult> right) => !(left == right);
+
+        public static bool operator ==(Func<T1, T2, T3, T4, T5, T6, TResult> left, FuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => left == right?._callback;
+        public static bool operator !=(Func<T1, T2, T3, T4, T5, T6, TResult> left, FuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => !(left == right);
+
+        public static implicit operator FuncCommand<T1, T2, T3, T4, T5, T6, TResult>(Func<T1, T2, T3, T4, T5, T6, TResult> value) => Get(value);
+        public static explicit operator Func<T1, T2, T3, T4, T5, T6, TResult>(FuncCommand<T1, T2, T3, T4, T5, T6, TResult> value)
+        {
+            if (value is null) return null;
+            var callback = value._callback;
+            return value.Release() ? callback : null;
+        }
+        #endregion
+
+        #region Implementation
+        static readonly Stack<FuncCommand<T1, T2, T3, T4, T5, T6, TResult>> _pool = new();
+        #endregion
+    }
+
+    /// <inheritdoc cref="ReadOnlyFuncCommand{TResult}"/>
+    public abstract class ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> : BaseFuncCommand<TResult>, IEquatable<ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult>>
+    {
+        #region API
+        public T1 Arg1 { get; protected set; }
+        public T2 Arg2 { get; protected set; }
+        public T3 Arg3 { get; protected set; }
+        public T4 Arg4 { get; protected set; }
+        public T5 Arg5 { get; protected set; }
+        public T6 Arg6 { get; protected set; }
+
+
+
+        public override bool HasReleased => _hasReleased;
+
+        /// <inheritdoc cref="ReadOnlyFuncCommand{T1, TResult}.Invoke(T1)"/>
+        [HideInCallstack]
+        public TResult Invoke(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6) => _callback == null ? default : _callback.Invoke(arg1, arg2, arg3, arg4, arg5, arg6);
+        public override TResult Invoke() => _callback == null ? default : _callback.Invoke(Arg1, Arg2, Arg3, Arg4, Arg5, Arg6);
+
+        /// <inheritdoc cref="ReadOnlyFuncCommand{T1, TResult}.Execute(T1)"/>
+        [HideInCallstack]
+        public void Execute(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
+        {
+            try
+            {
+                Invoke(arg1, arg2, arg3, arg4, arg5, arg6);
+            }
+            finally
+            {
+                Release();
+            }
+        }
+
+
+
+        public bool Equals(ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> other) => other is not null && _callback == other._callback;
+        public override bool Equals(object obj) => obj is ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> other && Equals(other);
+        public override int GetHashCode() => _callback?.GetHashCode() ?? 0;
+
+        public static bool operator ==(ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => ReferenceEquals(left, right) || left is not null && left.Equals(right);
+        public static bool operator !=(ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => !(left == right);
+
+        public static bool operator ==(ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, Func<T1, T2, T3, T4, T5, T6, TResult> right) => left?._callback == right;
+        public static bool operator !=(ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> left, Func<T1, T2, T3, T4, T5, T6, TResult> right) => !(left == right);
+
+        public static bool operator ==(Func<T1, T2, T3, T4, T5, T6, TResult> left, ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => left == right?._callback;
+        public static bool operator !=(Func<T1, T2, T3, T4, T5, T6, TResult> left, ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> right) => !(left == right);
+
+        public static explicit operator Func<T1, T2, T3, T4, T5, T6, TResult>(ReadOnlyFuncCommand<T1, T2, T3, T4, T5, T6, TResult> value)
+        {
+            if (value is null) return null;
+            var callback = value._callback;
+            return value.Release() ? callback : null;
+        }
+        #endregion
+
+        #region Implementation
+        protected Func<T1, T2, T3, T4, T5, T6, TResult> _callback;
+        protected bool _hasReleased;
+        #endregion
+    }
+
+}

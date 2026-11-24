@@ -20,13 +20,14 @@ namespace Castforn.CommandAndCallback
         [HideInCallstack]
         public void Execute()
         {
-#if UNITY_EDITOR
-            try { Invoke(); }
-            finally { Release(); }
-#else
-            Invoke();
-            Release();
-#endif
+            try
+            {
+                Invoke();
+            }
+            finally
+            {
+                Release();
+            }
         }
     }
 
