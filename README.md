@@ -124,7 +124,7 @@ public class Test : MonoBehaviour
         actionCommand.SetArgs(null, 88.6);
 
 
-        // You can then invoke it using its stored arguements
+        // You can then invoke it using its stored arguments
         actionCommand.Invoke();
 
 
