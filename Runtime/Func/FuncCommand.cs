@@ -23,13 +23,11 @@ namespace Castforn.CommandAndCallback
         public static FuncCommand<TResult> Get(Func<TResult> callback)
         {
             if (callback == null) return null;
-            while (_pool.TryPop(out var command))
-            {
-                command._callback = callback;
-                command._hasReleased = false;
-                return command;
-            }
-            return new(callback);
+            if (!_pool.TryPop(out var command)) return new(callback);
+
+            command._callback = callback;
+            command._hasReleased = false;
+            return command;
         }
 
         
@@ -79,7 +77,7 @@ namespace Castforn.CommandAndCallback
     }
 
     /// <summary>
-    /// Represents a read only command that invokes a function delegate and returns a result.
+    /// Represents a read-only command that invokes a function delegate and returns a result.
     /// </summary>
     public abstract class ReadOnlyFuncCommand<TResult> : BaseFuncCommand<TResult>, IEquatable<ReadOnlyFuncCommand<TResult>>
     {

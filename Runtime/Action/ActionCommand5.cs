@@ -17,13 +17,11 @@ namespace Castforn.CommandAndCallback
         public static ActionCommand<T1, T2, T3, T4, T5> Get(Action<T1, T2, T3, T4, T5> callback)
         {
             if (callback == null) return null;
-            while (_pool.TryPop(out var command))
-            {
-                command._callback = callback;
-                command._hasReleased = false;
-                return command;
-            }
-            return new(callback);
+            if (!_pool.TryPop(out var command)) return new(callback);
+
+            command._callback = callback;
+            command._hasReleased = false;
+            return command;
         }
 
         /// <inheritdoc cref="ActionCommand.Get(Action)"/>

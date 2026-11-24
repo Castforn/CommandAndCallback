@@ -17,13 +17,11 @@ namespace Castforn.CommandAndCallback
         public static FuncCommand<T1, T2, TResult> Get(Func<T1, T2, TResult> callback)
         {
             if (callback == null) return null;
-            while (_pool.TryPop(out var command))
-            {
-                command._callback = callback;
-                command._hasReleased = false;
-                return command;
-            }
-            return new(callback);
+            if (!_pool.TryPop(out var command)) return new(callback);
+
+            command._callback = callback;
+            command._hasReleased = false;
+            return command;
         }
 
         /// <inheritdoc cref="FuncCommand{T1, T2, TResult}.Get(Func{T1, T2, TResult})"/>
@@ -126,16 +124,18 @@ namespace Castforn.CommandAndCallback
 
         /// <inheritdoc cref="ReadOnlyFuncCommand{T1, TResult}.Execute(T1)"/>
         [HideInCallstack]
-        public void Execute(T1 arg1, T2 arg2)
+        public TResult Execute(T1 arg1, T2 arg2)
         {
+            TResult result = default;
             try
             {
-                Invoke(arg1, arg2);
+                result = Invoke(arg1, arg2);
             }
             finally
             {
                 Release();
             }
+            return result;
         }
 
 

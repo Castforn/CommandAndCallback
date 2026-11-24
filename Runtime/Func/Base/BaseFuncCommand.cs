@@ -20,7 +20,7 @@ namespace Castforn.CommandAndCallback
         [HideInCallstack]
         public TResult Execute()
         {
-            TResult result;
+            TResult result = default;
             try
             {
                 result = Invoke();

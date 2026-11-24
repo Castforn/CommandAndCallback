@@ -23,13 +23,11 @@ namespace Castforn.CommandAndCallback
         public static ActionCommand Get(Action callback)
         {
             if (callback == null) return null;
-            while (_pool.TryPop(out var command))
-            {
-                command._callback = callback;
-                command._hasReleased = false;
-                return command;
-            }
-            return new(callback);
+            if (!_pool.TryPop(out var command)) return new(callback);
+
+            command._callback = callback;
+            command._hasReleased = false;
+            return command;
         }
 
 
@@ -81,7 +79,7 @@ namespace Castforn.CommandAndCallback
     }
 
     /// <summary>
-    /// Represents a read only command that invokes an action delegate.
+    /// Represents a read-only command that invokes an action delegate.
     /// </summary>
     public abstract class ReadOnlyActionCommand : BaseActionCommand, IEquatable<ReadOnlyActionCommand>
     {

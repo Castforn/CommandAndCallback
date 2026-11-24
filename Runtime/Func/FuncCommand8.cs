@@ -17,13 +17,11 @@ namespace Castforn.CommandAndCallback
         public static FuncCommand<T1, T2, T3, T4, T5, T6, T7, T8, TResult> Get(Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> callback)
         {
             if (callback == null) return null;
-            while (_pool.TryPop(out var command))
-            {
-                command._callback = callback;
-                command._hasReleased = false;
-                return command;
-            }
-            return new(callback);
+            if (!_pool.TryPop(out var command)) return new(callback);
+
+            command._callback = callback;
+            command._hasReleased = false;
+            return command;
         }
 
         /// <inheritdoc cref="FuncCommand{T1, T2, T3, T4, T5, T6, T7, T8, TResult}.Get(Func{T1, T2, T3, T4, T5, T6, T7, T8, TResult})"/>
@@ -186,16 +184,18 @@ namespace Castforn.CommandAndCallback
 
         /// <inheritdoc cref="ReadOnlyFuncCommand{T1, TResult}.Execute(T1)"/>
         [HideInCallstack]
-        public void Execute(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
+        public TResult Execute(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
         {
+            TResult result = default;
             try
             {
-                Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+                result = Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
             }
             finally
             {
                 Release();
             }
+            return result;
         }
 
 
