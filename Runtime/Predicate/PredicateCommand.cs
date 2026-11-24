@@ -59,50 +59,6 @@ namespace Castforn.CommandAndCallback
 
 
 
-        /// <summary>
-        /// Invokes the command using the supplied arguments and returns a bool.
-        /// </summary>
-        [HideInCallstack]
-        public bool Invoke(T arg) => _callback != null && _callback.Invoke(arg);
-
-        /// <summary>
-        /// Invokes the command using the supplied arguments and returns a bool then releases it afterward.
-        /// </summary>
-        [HideInCallstack]
-        public bool Execute(T arg)
-        {
-            bool result;
-            try
-            {
-                result = Invoke(arg);
-            }
-            finally
-            {
-                Release();
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Invokes the command and returns a bool then releases it afterward.
-        /// </summary>
-        [HideInCallstack]
-        public bool Execute()
-        {
-            bool result;
-            try
-            {
-                result = Invoke(Arg);
-            }
-            finally
-            {
-                Release();
-            }
-            return result;
-        }
-
-
-
         public override bool Release()
         {
             if (_hasReleased) return false;
@@ -167,6 +123,51 @@ namespace Castforn.CommandAndCallback
         /// </summary>
         [HideInCallstack]
         public bool Invoke() => _callback != null && _callback.Invoke(Arg);
+
+        /// <summary>
+        /// Invokes the command using the supplied arguments and returns a bool.
+        /// </summary>
+        [HideInCallstack]
+        public bool Invoke(T arg) => _callback != null && _callback.Invoke(arg);
+
+        /// <summary>
+        /// Invokes the command using the supplied arguments and returns a bool then releases it afterward.
+        /// </summary>
+        [HideInCallstack]
+        public bool Execute(T arg)
+        {
+            bool result;
+            try
+            {
+                result = Invoke(arg);
+            }
+            finally
+            {
+                Release();
+            }
+            return result;
+        }
+
+
+
+        /// <summary>
+        /// Invokes the command and returns a bool then releases it afterward.
+        /// </summary>
+        [HideInCallstack]
+        public bool Execute()
+        {
+            bool result;
+            try
+            {
+                result = Invoke();
+            }
+            finally
+            {
+                Release();
+            }
+            return result;
+        }
+
 
 
         public bool Equals(ReadOnlyPredicateCommand<T> other) => other is not null && _callback == other._callback;
