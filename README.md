@@ -185,13 +185,13 @@ public class Test : MonoBehaviour
         result = command.Invoke();
 
 
-        // I recommend discarding their reference after they've been released to prevent unnecessary problems
-        command = null;
-
-
-        // You can also look at HasReleased if the command has already been released or not yet
+        // You can look at HasReleased if the command has already been released or not yet
         if (command.HasReleased) Debug.Log("Has");
         else Debug.Log("Has not");
+
+
+        // I also recommend discarding their reference after they've been released to prevent unnecessary problems
+        command = null;
 
 
         // But thats not a safe way to identify that the command you released will stay that way
