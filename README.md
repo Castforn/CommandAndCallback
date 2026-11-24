@@ -284,7 +284,7 @@ public class Test : MonoBehaviour
 ```
 
 ## Read-Only Commands
-`ActionCommand` and `FuncCommand` has a read-only variant (`ReadOnlyActionCommand` and `ReadOnlyFuncCommand`) that prevents you from being able to change arguments. `PredicateCommand` doesn't also have this.
+`ActionCommand` and `FuncCommand` has a read-only variant (`ReadOnlyActionCommand` and `ReadOnlyFuncCommand`) that prevents you from being able to change arguments. `PredicateCommand` doesn't have this.
 
 ```csharp
 using Castforn.CommandAndCallback;
